@@ -1,11 +1,46 @@
 import React, {Component} from 'react';
 
 class ChatBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: this.props.currentUser.name, 
+      content: 'hi'
+    };
+    this.updateContent = this.updateContent.bind(this);
+    this.updateUser = this.updateUser.bind(this);
+  }
+
+  updateUser(e) {
+    const username = e.target.value;
+    this.setState({username});
+    
+    if (e.key === 'Enter') {
+      this.onSubmit();
+    }
+  }
+
+  updateContent(e) {
+    const content = e.target.value;
+    this.setState({content});
+    
+    if (e.key === 'Enter') {
+      this.onSubmit();
+    }
+  }
+
+  onSubmit(e) {
+    this.props.addMessage(this.state.username, this.state.content);
+  }
+
   render() {
     return (
       <footer className="chatbar">
-        <input className="chatbar-username" placeholder="Your Name (Optional)" />
-        <input className="chatbar-message" placeholder="Type a message and hit ENTER" />
+        {/* <form onSubmit={onSubmit}> */}
+          <input onKeyUp={this.updateUser} className="chatbar-username" name="chatbar-username" placeholder="Your Name (Optional)"
+          defaultValue={this.props.currentUser.name} />
+          <input onKeyUp={this.updateContent} className="chatbar-message" name="message" placeholder="Type a message and hit ENTER" />
+        {/* </form> */}
       </footer>
     );
   }
