@@ -31,6 +31,7 @@ class ChatBar extends Component {
 
   onSubmit(e) {
     this.props.addMessage(this.state.username, this.state.content);
+    document.querySelector('.chatbar-message').value = '';
   }
 
   render() {
