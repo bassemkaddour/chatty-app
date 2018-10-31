@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
 
-import messages from '../data/messages.json';
-
 import uuidv1 from 'uuid/v1';
 // const uuidv1 = require('uuid/v1');
 
@@ -16,6 +14,7 @@ class App extends Component {
       messages: []
     };
     this.addMessage = this.addMessage.bind(this);
+    this.updateCurrentUser = this.updateCurrentUser.bind(this);
     this.socket = new WebSocket(`ws://${window.location.hostname}:3001`); 
   }
   
@@ -25,15 +24,18 @@ class App extends Component {
     });
 
     this.socket.onmessage = (message) => {
-      console.log('Recieved message', message);
       const oldMessages = this.state.messages;
       const newMessage = JSON.parse(message.data);
       const newMessages = [...oldMessages, newMessage];
       this.setState({messages: newMessages});
     };
   }
+  updateCurrentUser(username) {
+    this.setState({currentUser: {name: username}});
+  }
 
   addMessage(username, content) {
+    this.updateCurrentUser(username);
     const oldMessages = this.state.messages;
     const id = uuidv1();
     const newMessage = {
@@ -52,7 +54,7 @@ class App extends Component {
     return (
       <div>
         <MessageList messages={this.state.messages} />
-        <ChatBar currentUser={this.state.currentUser} addMessage={this.addMessage} />
+        <ChatBar currentUser={this.state.currentUser} updateCurrentUser={this.updateCurrentUser} addMessage={this.addMessage} />
       </div>
     );
   }

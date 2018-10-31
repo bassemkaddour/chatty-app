@@ -16,7 +16,7 @@ class ChatBar extends Component {
     this.setState({username});
     
     if (e.key === 'Enter') {
-      this.onSubmit();
+      this.props.updateCurrentUser(this.state.username);
     }
   }
 
@@ -25,13 +25,9 @@ class ChatBar extends Component {
     this.setState({content});
     
     if (e.key === 'Enter') {
-      this.onSubmit();
+      this.props.addMessage(this.state.username, this.state.content);
+      e.target.value = '';
     }
-  }
-
-  onSubmit(e) {
-    this.props.addMessage(this.state.username, this.state.content);
-    document.querySelector('.chatbar-message').value = '';
   }
 
   render() {
