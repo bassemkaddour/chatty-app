@@ -10,8 +10,8 @@ class App extends Component {
     super(props);
     this.state = {
       loading: true, 
-      currentUser: messages[0].currentUser, 
-      messages: messages[0].messages
+      currentUser: {name: 'Bob'}, 
+      messages: []
     };
     this.addMessage = this.addMessage.bind(this);
     this.socket = new WebSocket(`ws://${window.location.hostname}:3001`); 
