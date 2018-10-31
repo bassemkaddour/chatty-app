@@ -1,7 +1,7 @@
 // server.js
 
 const express = require('express');
-const WebSocket = require('ws')
+const WebSocket = require('ws');
 const SocketServer = WebSocket.Server;
 
 // Set the port to 3001
@@ -26,9 +26,8 @@ wss.on('connection', (ws) => {
   clients.push(ws);
 
   ws.on('message', function incoming(message) {
-    // console.log('RECEIVED', JSON.parse(message).id);
     clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN && client != ws) {
+      if (client.readyState === WebSocket.OPEN) {
         client.send(message);
       }
     });

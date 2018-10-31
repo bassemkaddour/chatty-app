@@ -1,19 +1,18 @@
 import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
-
 import uuidv1 from 'uuid/v1';
-// const uuidv1 = require('uuid/v1');
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true, 
-      currentUser: {name: 'Bob'}, 
+      currentUser: {name: 'Anonymous'}, 
       messages: []
     };
     this.addMessage = this.addMessage.bind(this);
+    this.handleMessage = this.handleMessage.bind(this);
     this.updateCurrentUser = this.updateCurrentUser.bind(this);
     this.socket = new WebSocket(`ws://${window.location.hostname}:3001`); 
   }
@@ -23,20 +22,22 @@ class App extends Component {
       console.log('connected sockets');
     });
 
-    this.socket.onmessage = (message) => {
-      const oldMessages = this.state.messages;
-      const newMessage = JSON.parse(message.data);
-      const newMessages = [...oldMessages, newMessage];
-      this.setState({messages: newMessages});
-    };
+    this.socket.onmessage = this.handleMessage;
+      
   }
   updateCurrentUser(username) {
     this.setState({currentUser: {name: username}});
   }
 
+  handleMessage(message) {
+    const oldMessages = this.state.messages;
+    const newMessage = JSON.parse(message.data);
+    const newMessages = [...oldMessages, newMessage];
+    this.setState({messages: newMessages});
+  }
+
   addMessage(username, content) {
     this.updateCurrentUser(username);
-    const oldMessages = this.state.messages;
     const id = uuidv1();
     const newMessage = {
       id, 
@@ -46,8 +47,6 @@ class App extends Component {
     const jMessage = JSON.stringify(newMessage);
     this.socket.send(jMessage);
 
-    const newMessages = [...oldMessages, newMessage]; 
-    this.setState({messages: newMessages})
   }
 
   render() {
