@@ -26,6 +26,8 @@ class App extends Component {
       
   }
   updateCurrentUser(username) {
+    username = username || 'Anonymous';
+    console.log(username);
     this.setState({currentUser: {name: username}});
   }
 

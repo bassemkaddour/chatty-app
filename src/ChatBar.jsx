@@ -12,9 +12,9 @@ class ChatBar extends Component {
   }
 
   updateUser(e) {
-    const username = e.target.value;
+    let username = e.target.value;
+    username = username || 'Anonymous';
     this.setState({username});
-    
     if (e.key === 'Enter') {
       this.props.updateCurrentUser(this.state.username);
     }
