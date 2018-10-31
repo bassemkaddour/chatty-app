@@ -4,6 +4,8 @@ import MessageList from './MessageList.jsx';
 
 import messages from '../data/messages.json';
 
+import uuidv1 from 'uuid/v1';
+// const uuidv1 = require('uuid/v1');
 
 class App extends Component {
   constructor(props) {
@@ -18,23 +20,22 @@ class App extends Component {
   }
   
   componentDidMount() {
-    setTimeout(() => {
-      // Add a new message to the list of messages in the data store
-      const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
-      const messages = this.state.messages.concat(newMessage)
-      // Update the state of the app component.
-      // Calling setState will trigger a call to render() in App and all child components.
-      this.setState({messages: messages})
-    }, 3000);
-    
     this.socket.addEventListener('open', () => {
       console.log('connected sockets');
     });
+
+    this.socket.onmessage = (message) => {
+      console.log('Recieved message', message);
+      const oldMessages = this.state.messages;
+      const newMessage = JSON.parse(message.data);
+      const newMessages = [...oldMessages, newMessage];
+      this.setState({messages: newMessages});
+    };
   }
 
   addMessage(username, content) {
     const oldMessages = this.state.messages;
-    const id = oldMessages[oldMessages.length - 1].id + 1;
+    const id = uuidv1();
     const newMessage = {
       id, 
       username,

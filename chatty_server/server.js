@@ -1,11 +1,13 @@
 // server.js
 
 const express = require('express');
-const SocketServer = require('ws').Server;
+const WebSocket = require('ws')
+const SocketServer = WebSocket.Server;
 
 // Set the port to 3001
 const PORT = 3001;
 
+const clients = [];
 // Create a new express server
 const server = express()
    // Make the express server serve static assets (html, javascript, css) from the /public folder
@@ -21,8 +23,15 @@ const wss = new SocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
+  clients.push(ws);
+
   ws.on('message', function incoming(message) {
-    console.log('RECEIVED', JSON.parse(message));
+    // console.log('RECEIVED', JSON.parse(message).id);
+    clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN && client != ws) {
+        client.send(message);
+      }
+    });
   });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
