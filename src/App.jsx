@@ -23,12 +23,21 @@ class App extends Component {
     });
 
     this.socket.onmessage = this.handleMessage;
-      
+    
   }
   updateCurrentUser(username) {
-    username = username || 'Anonymous';
-    console.log(username);
-    this.setState({currentUser: {name: username}});
+    if (this.state.currentUser.name !== username) {
+      const id = uuidv1();
+      const content =  `${this.state.currentUser.name} has changed their name to ${username}`
+      const notificationMessage = {
+        id,
+        type: 'postNotification', 
+        content
+      };
+      const jNotificationMessage = JSON.stringify(notificationMessage);
+      this.socket.send(jNotificationMessage);
+      this.setState({currentUser: {name: username}});
+    }
   }
 
   handleMessage(message) {
@@ -42,6 +51,7 @@ class App extends Component {
     this.updateCurrentUser(username);
     const id = uuidv1();
     const newMessage = {
+      type: 'postMessage',
       id, 
       username,
       content

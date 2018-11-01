@@ -5,7 +5,7 @@ class ChatBar extends Component {
     super(props);
     this.state = {
       username: this.props.currentUser.name, 
-      content: 'hi'
+      content: ''
     };
     this.updateContent = this.updateContent.bind(this);
     this.updateUser = this.updateUser.bind(this);
