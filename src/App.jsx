@@ -3,7 +3,7 @@ import NavBar from './NavBar.jsx';
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
 import uuidv1 from 'uuid/v1';
-
+import 'normalize.css';
 
 class App extends Component {
   constructor(props) {

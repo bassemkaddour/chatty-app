@@ -36,8 +36,6 @@ function handleMessage(message) {
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.broadcast = function broadcast(data) {
-  // data = wss.clients.size;
-  console.log('broadcasting')
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
       client.send(data);
