@@ -8,6 +8,7 @@ const SocketServer = WebSocket.Server;
 const PORT = 3001;
 
 const clients = [];
+const colors = ['purple', 'blue', 'red', 'green'];
 // Create a new express server
 const server = express()
    // Make the express server serve static assets (html, javascript, css) from the /public folder
@@ -17,21 +18,6 @@ const server = express()
 // Create the WebSockets server
 const wss = new SocketServer({ server, clientTracking: true });
 
-function handleMessage(message) {
-  //changes type from post to incoming
-  const messageData = JSON.parse(message); 
-  switch (messageData.type) {
-    case 'postMessage': 
-      messageData.type = 'incomingMessage';
-      return JSON.stringify(messageData);
-    case 'postNotification': 
-      messageData.type = 'incomingNotification';
-      return JSON.stringify(messageData);
-    default: 
-      console.error("Unknown event type " + messageData.type);
-      break;
-  }
-}
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
@@ -45,6 +31,25 @@ wss.broadcast = function broadcast(data) {
 
 wss.on('connection', (ws) => {
   console.log('Client connected');
+  
+    const color = colors[wss.clients.size % 4];
+
+    function handleMessage(message) {
+      //changes type from post to incoming
+      const messageData = JSON.parse(message); 
+      switch (messageData.type) {
+        case 'postMessage': 
+          messageData.type = 'incomingMessage';
+          messageData.color = color;
+          return JSON.stringify(messageData);
+        case 'postNotification': 
+          messageData.type = 'incomingNotification';
+          return JSON.stringify(messageData);
+        default: 
+          console.error("Unknown event type " + messageData.type);
+          break;
+      }
+    }
 
   clients.push(ws);
   

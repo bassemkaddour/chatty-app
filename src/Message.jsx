@@ -7,7 +7,7 @@ function Message({message}) {
     case 'incomingMessage': 
       messageDiv = (
         <div className="message">
-          <span className="message-username">{message.username}</span>
+          <span className="message-username" style={{color: message.color}}>{message.username}</span>
           <span className="message-content">{message.content}</span>
         </div>
       );
