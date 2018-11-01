@@ -19,6 +19,8 @@ function Message({message}) {
         </div>
       );
       break;
+    default: 
+      console.error("Unknown event type" + messageData.type);
   }
 
   return (

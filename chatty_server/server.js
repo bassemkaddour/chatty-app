@@ -18,8 +18,8 @@ const server = express()
 const wss = new SocketServer({ server });
 
 function handleMessage(message) {
+  //changes type from post to incoming
   const messageData = JSON.parse(message); 
-  console.log(messageData.type);
   switch (messageData.type) {
     case 'postMessage': 
       messageData.type = 'incomingMessage';
@@ -27,6 +27,9 @@ function handleMessage(message) {
     case 'postNotification': 
       messageData.type = 'incomingNotification';
       return JSON.stringify(messageData);
+    default: 
+      console.error("Unknown event type " + messageData.type);
+      break;
   }
 }
 // Set up a callback that will run when a client connects to the server
