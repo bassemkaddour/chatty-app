@@ -24,11 +24,7 @@ class App extends Component {
     this.socket.addEventListener('open', () => {
     });
 
-    this.socket.onmessage = (message) => {
-      
-          this.handleMessage(message);
-    }
-    
+    this.socket.onmessage = this.handleMessage;
   }
   
   updateCurrentUser(username) {
