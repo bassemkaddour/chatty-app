@@ -22,21 +22,13 @@ class App extends Component {
   
   componentDidMount() {
     this.socket.addEventListener('open', () => {
-      console.log('connected sockets');
     });
 
     this.socket.onmessage = (message) => {
-      const parsedMessage = JSON.parse(message.data);
-      const type = parsedMessage.type;
-      switch (type) {
-        case 'user-count':
-          const count = parsedMessage.count;
-          this.setState({userCount: count})
-          break;
-        default:
+      
           this.handleMessage(message);
-      }
     }
+    
   }
   
   updateCurrentUser(username) {
@@ -55,10 +47,17 @@ class App extends Component {
   }
 
   handleMessage(message) {
-    const oldMessages = this.state.messages;
-    const newMessage = JSON.parse(message.data);
-    const newMessages = [...oldMessages, newMessage];
-    this.setState({messages: newMessages});
+    const parsedMessage = JSON.parse(message.data);
+    const type = parsedMessage.type;
+      switch (type) {
+        case 'user-count':
+          this.setState({userCount: parsedMessage.count})
+          break;
+        default:
+          const oldMessages = this.state.messages;
+          const newMessages = [...oldMessages, parsedMessage];
+          this.setState({messages: newMessages});
+      }
   }
 
   addMessage(username, content) {

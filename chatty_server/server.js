@@ -32,7 +32,7 @@ wss.broadcast = function broadcast(data) {
 wss.on('connection', (ws) => {
   console.log('Client connected');
   
-    const color = colors[wss.clients.size % 4];
+    const color = colors[clients.length % 4];
 
     function handleMessage(message) {
       //changes type from post to incoming
