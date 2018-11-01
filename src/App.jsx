@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
+import NavBar from './NavBar.jsx';
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
 import uuidv1 from 'uuid/v1';
+
 
 class App extends Component {
   constructor(props) {
@@ -9,7 +11,8 @@ class App extends Component {
     this.state = {
       loading: true, 
       currentUser: {name: 'Anonymous'}, 
-      messages: []
+      messages: [],
+      userCount: 0
     };
     this.addMessage = this.addMessage.bind(this);
     this.handleMessage = this.handleMessage.bind(this);
@@ -22,7 +25,18 @@ class App extends Component {
       console.log('connected sockets');
     });
 
-    this.socket.onmessage = this.handleMessage;
+    this.socket.onmessage = (message) => {
+      const parsedMessage = JSON.parse(message.data);
+      const type = parsedMessage.type;
+      switch (type) {
+        case 'user-count':
+          const count = parsedMessage.count;
+          this.setState({userCount: count})
+          break;
+        default:
+          this.handleMessage(message);
+      }
+    }
   }
   
   updateCurrentUser(username) {
@@ -63,6 +77,7 @@ class App extends Component {
   render() {
     return (
       <div>
+        <NavBar userCount={this.state.userCount} />
         <MessageList messages={this.state.messages} />
         <ChatBar currentUser={this.state.currentUser} updateCurrentUser={this.updateCurrentUser} addMessage={this.addMessage} />
       </div>
