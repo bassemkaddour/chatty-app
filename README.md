@@ -4,7 +4,6 @@ ChattyApp is a simple single page chat app made with ReactJS, Express, ws, and S
 
 ## Final Product
 
-Chatty Messages:
 !["Chatty Messages:"](https://github.com/bassemkaddour/chatty-app/blob/master/docs/Screen%20Shot%202018-11-01%20at%2011.40.58%20PM.png?raw=true)
 ## Getting Started
 
