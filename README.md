@@ -1,6 +1,5 @@
 # ChattyApp Project
-=====================
-<br/>
+
 ChattyApp is a simple single page chat app made with ReactJS, Express, ws, and SASS. 
 
 ## Final Product
