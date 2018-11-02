@@ -40,4 +40,11 @@ class ChatBar extends Component {
     );
   }
 }
+
+ChatBar.propTypes = {
+  currentUser: React.PropTypes.string.isRequired,
+  updateCurrentUser: React.PropTypes.string.isRequired,
+  addMessage: React.PropTypes.string.isRequired
+}
+
 export default ChatBar;

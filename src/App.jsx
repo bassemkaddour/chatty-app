@@ -46,13 +46,15 @@ class App extends Component {
     const parsedMessage = JSON.parse(message.data);
     const type = parsedMessage.type;
       switch (type) {
-        case 'user-count':
+        case 'user-count': {
           this.setState({userCount: parsedMessage.count})
           break;
-        default:
+        }
+        default: {
           const oldMessages = this.state.messages;
           const newMessages = [...oldMessages, parsedMessage];
           this.setState({messages: newMessages});
+        }
       }
   }
 

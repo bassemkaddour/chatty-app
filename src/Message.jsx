@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 
 function Message({message}) {
@@ -20,7 +20,7 @@ function Message({message}) {
       );
       break;
     default: 
-      console.error('Unknown event type' + messageData.type);
+      return null;
   }
 
   return (

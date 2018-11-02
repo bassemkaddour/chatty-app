@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Message from './Message.jsx';
 
- function MessageList({messages}) {
+function MessageList({messages}) {
   const messageList = messages.map(message => (
     <Message message={message} key={message.id} />
   ));
@@ -11,4 +11,9 @@ import Message from './Message.jsx';
     </main>
   );
 }
+
+MessageList.propTypes = {
+  messages: React.PropTypes.string.isRequired
+}
+
 export default MessageList;
