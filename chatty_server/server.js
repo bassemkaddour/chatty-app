@@ -8,7 +8,7 @@ const SocketServer = WebSocket.Server;
 const PORT = 3001;
 
 const clients = [];
-const colors = ['purple', 'blue', 'red', 'green'];
+const colors = ['purple', 'blue', 'red', 'green', 'turquoise', 'pink'];
 // Create a new express server
 const server = express()
    // Make the express server serve static assets (html, javascript, css) from the /public folder
@@ -32,7 +32,7 @@ wss.broadcast = function broadcast(data) {
 wss.on('connection', (ws) => {
   console.log('Client connected');
   
-    const color = colors[clients.length % 4];
+    const color = colors[clients.length % colors.length];
 
     function handleMessage(message) {
       //changes type from post to incoming
